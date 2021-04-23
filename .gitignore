@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/PulsarConsumer/obj
+/PulsarProducer/obj
+/PulsarConsumer/bin
+/PulsarProducer/bin
+
+.vs
