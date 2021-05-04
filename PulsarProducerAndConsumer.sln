@@ -3,9 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PulsarProducer", "PulsarProducer\PulsarProducer.csproj", "{86720219-EC49-400C-A059-F94C0DF5C5D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomProject.Producer", "CustomProject.Producer\CustomProject.Producer.csproj", "{86720219-EC49-400C-A059-F94C0DF5C5D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PulsarConsumer", "PulsarConsumer\PulsarConsumer.csproj", "{2A213414-FF9A-43DF-B2B9-37D271ADC12E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomProject.Consumer", "CustomProject.Consumer\CustomProject.Consumer.csproj", "{2A213414-FF9A-43DF-B2B9-37D271ADC12E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomProject.Pulsar.Concept", "CustomProject.Pulsar.Concept\CustomProject.Pulsar.Concept.csproj", "{2DFB8583-26D8-4784-99DA-9CAB94216E4C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomProject.Pulsar.Contracts", "CustomProject.Pulsar.Contracts\CustomProject.Pulsar.Contracts.csproj", "{DDA6A0AD-0E9A-430D-AEA0-4E298E6D2783}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomProject.Reader", "CustomProject.Reader\CustomProject.Reader.csproj", "{0CA72E33-86CB-49CC-88CB-D176B26BEF65}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,18 @@ Global
 		{2A213414-FF9A-43DF-B2B9-37D271ADC12E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A213414-FF9A-43DF-B2B9-37D271ADC12E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A213414-FF9A-43DF-B2B9-37D271ADC12E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DFB8583-26D8-4784-99DA-9CAB94216E4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DFB8583-26D8-4784-99DA-9CAB94216E4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DFB8583-26D8-4784-99DA-9CAB94216E4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DFB8583-26D8-4784-99DA-9CAB94216E4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDA6A0AD-0E9A-430D-AEA0-4E298E6D2783}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDA6A0AD-0E9A-430D-AEA0-4E298E6D2783}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDA6A0AD-0E9A-430D-AEA0-4E298E6D2783}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDA6A0AD-0E9A-430D-AEA0-4E298E6D2783}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CA72E33-86CB-49CC-88CB-D176B26BEF65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CA72E33-86CB-49CC-88CB-D176B26BEF65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CA72E33-86CB-49CC-88CB-D176B26BEF65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CA72E33-86CB-49CC-88CB-D176B26BEF65}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

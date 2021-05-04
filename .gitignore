@@ -8,3 +8,5 @@
 /PulsarProducer/bin
 
 .vs
+/*/obj
+/*/bin
