@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CustomProject.Pulsar.Concept
 {
-	public class ProducerAdapter<T> : IProducerAdapter<T> where T : ITopicMessage
+	internal class ProducerAdapter<T> : IProducerAdapter<T> where T : ITopicMessage
 	{
 		private readonly IProducer<ReadOnlySequence<byte>> _nativeProducer;
 

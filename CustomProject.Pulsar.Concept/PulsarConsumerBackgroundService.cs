@@ -3,6 +3,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using CustomProject.Pulsar.Concept.Contracts;
+using Microsoft.Extensions.Logging;
 
 namespace CustomProject.Pulsar.Concept
 {
@@ -10,13 +11,17 @@ namespace CustomProject.Pulsar.Concept
 	{
 		private readonly IPulsarClientFactory _pulsarClientFactory;
 
+		private readonly ILogger _logger;
+
 		protected abstract string GetSubscription();
 
 		protected abstract void Handler(T message);
 
-		protected PulsarConsumerBackgroundService(IPulsarClientFactory pulsarClientFactory)
+		protected PulsarConsumerBackgroundService(IPulsarClientFactory pulsarClientFactory,
+			ILogger logger)
 		{
 			_pulsarClientFactory = pulsarClientFactory;
+			_logger = logger;
 		}
 
 		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -31,11 +36,12 @@ namespace CustomProject.Pulsar.Concept
 
 					await consumerAdapter.AcknowledgeCumulative(messageDto.PulsarMessageId, stoppingToken);
 
-					Console.WriteLine($"Message '{messageDto.PulsarMessageId}' was consumed");
+					_logger.LogDebug($"Message '{messageDto.PulsarMessageId}' was consumed");
 				}
-				catch
+				catch(Exception exception)
 				{
-					Console.WriteLine($"Message '{messageDto.PulsarMessageId}' wasn't consumed");
+					_logger.LogError($"Message '{messageDto.PulsarMessageId}' wasn't consumed", exception);
+
 					throw;
 				}
 			}

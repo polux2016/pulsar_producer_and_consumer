@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CustomProject.Pulsar.Concept
 {
-	public class ConsumerAdapter<T> : IConsumerAdapter<T> where T : ITopicMessage
+	internal class ConsumerAdapter<T> : IConsumerAdapter<T> where T : ITopicMessage
 	{
 		private readonly IConsumer<ReadOnlySequence<byte>> _nativeConsumer;
 

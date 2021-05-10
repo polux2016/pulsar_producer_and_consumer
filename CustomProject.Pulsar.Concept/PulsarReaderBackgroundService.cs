@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace CustomProject.Pulsar.Concept
 {
@@ -10,11 +11,15 @@ namespace CustomProject.Pulsar.Concept
 	{
 		private readonly IPulsarClientFactory _pulsarClientFactory;
 
+		private readonly ILogger _logger;
+
 		protected abstract void Handler(T message);
 
-		protected PulsarReaderBackgroundService(IPulsarClientFactory pulsarClientFactory)
+		protected PulsarReaderBackgroundService(IPulsarClientFactory pulsarClientFactory, 
+			ILogger logger)
 		{
 			_pulsarClientFactory = pulsarClientFactory;
+			_logger = logger;
 		}
 
 		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -27,11 +32,11 @@ namespace CustomProject.Pulsar.Concept
 				{
 					Handler(messageDto.Message);
 
-					Console.WriteLine($"Message '{messageDto.PulsarMessageId}' was read");
+					_logger.LogDebug($"Message '{messageDto.PulsarMessageId}' was read");
 				}
-				catch
-				{
-					Console.WriteLine($"Message '{messageDto.PulsarMessageId}' wasn't read");
+				catch(Exception exception)
+				{ 
+					_logger.LogError($"Message '{messageDto.PulsarMessageId}' wasn't read", exception);
 					throw;
 				}
 			}

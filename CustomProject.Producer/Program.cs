@@ -25,8 +25,9 @@ namespace CustomProject.Producer
 
 			for (var numberOfMessages = 10; numberOfMessages > 0; numberOfMessages--)
 			{
-				var result = await producer.Send(new AnyTopicMessage());
-				Console.WriteLine(result);
+				var messageIdProxy = await producer.Send(new AnyTopicMessage());
+
+				Console.WriteLine(messageIdProxy);
 
 				Thread.Sleep(2000);
 			}

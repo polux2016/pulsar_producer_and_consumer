@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace CustomProject.Pulsar.Concept.Helpers
@@ -12,6 +13,11 @@ namespace CustomProject.Pulsar.Concept.Helpers
 		{
 			var host = Host
 				.CreateDefaultBuilder()
+				.ConfigureLogging(logging =>
+				{
+					logging.ClearProviders();
+					logging.AddConsole();
+				})
 				.ConfigureServicesForCompaniesAssembly();
 
 			return host;

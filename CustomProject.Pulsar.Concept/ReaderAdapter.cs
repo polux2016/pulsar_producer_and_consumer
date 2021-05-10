@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace CustomProject.Pulsar.Concept
 {
-	public class ReaderAdapter<T> : IReaderAdapter<T> where T : ITopicMessage
+	internal class ReaderAdapter<T> : IReaderAdapter<T> where T : ITopicMessage
 	{
 		private readonly IReader<ReadOnlySequence<byte>> _nativeReader;
 

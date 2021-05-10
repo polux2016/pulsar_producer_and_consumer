@@ -1,7 +1,7 @@
 ﻿using CustomProject.Pulsar.Concept;
 using CustomProject.Pulsar.Concept.Contracts;
 using CustomProject.Pulsar.Contracts.TopicMessages;
-using System;
+using Microsoft.Extensions.Logging;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace CustomProject.Consumer
@@ -9,18 +9,22 @@ namespace CustomProject.Consumer
 	[HostedService]
 	public class AnyTopicConsumer : PulsarConsumerBackgroundService<AnyTopicMessage>
 	{
+		private readonly ILogger<AnyTopicConsumer> _logger;
+
 		protected override string GetSubscription()
 		{
 			return "Subscription";
 		}
 
-		public AnyTopicConsumer(IPulsarClientFactory pulsarClientFactory) : base(pulsarClientFactory)
+		public AnyTopicConsumer(IPulsarClientFactory pulsarClientFactory,
+			ILogger<AnyTopicConsumer> logger) : base(pulsarClientFactory, logger)
 		{
+			_logger = logger;
 		}
 
 		protected override void Handler(AnyTopicMessage message)
 		{
-			Console.WriteLine($"[{nameof(AnyTopicMessage)}]. Message handled.");
+			_logger.LogInformation($"[{nameof(AnyTopicMessage)}]. Message handled.");
 		}
 	}
 }

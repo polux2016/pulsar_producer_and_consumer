@@ -1,7 +1,7 @@
 ﻿using CustomProject.Pulsar.Concept;
 using CustomProject.Pulsar.Concept.Contracts;
 using CustomProject.Pulsar.Contracts.TopicMessages;
-using System;
+using Microsoft.Extensions.Logging;
 using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace CustomProject.Reader
@@ -9,13 +9,17 @@ namespace CustomProject.Reader
 	[HostedService]
 	public class AnyTopicReader : PulsarReaderBackgroundService<AnyTopicMessage>
 	{
-		public AnyTopicReader(IPulsarClientFactory pulsarClientFactory) : base(pulsarClientFactory)
+		private readonly ILogger<AnyTopicReader> _logger;
+
+		public AnyTopicReader(IPulsarClientFactory pulsarClientFactory,
+			ILogger<AnyTopicReader> logger) : base(pulsarClientFactory, logger)
 		{
+			_logger = logger;
 		}
 
 		protected override void Handler(AnyTopicMessage message)
 		{
-			Console.WriteLine($"[{nameof(AnyTopicMessage)}]. Message read.");
+			_logger.LogInformation($"[{nameof(AnyTopicMessage)}]. Message read.");
 		}
 	}
 }

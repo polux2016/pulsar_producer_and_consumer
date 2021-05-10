@@ -5,7 +5,7 @@ using CustomProject.Pulsar.Concept.Contracts;
 
 namespace CustomProject.Pulsar.Concept
 {
-	public class ConsoleConfigurationBuilder: IPulsarConfigurationBuilder
+	public class PulsarConfigurationBuilder: IPulsarConfigurationBuilder
 	{
 		private readonly IPulsarSettings _pulsarSettings;
 		
@@ -13,7 +13,7 @@ namespace CustomProject.Pulsar.Concept
 
 		public IPulsarClient PulsarNativeClient => _pulsarNativeClientLazy.Value;
 
-		public ConsoleConfigurationBuilder(IPulsarSettings pulsarSettings)
+		public PulsarConfigurationBuilder(IPulsarSettings pulsarSettings)
 		{
 			_pulsarSettings = pulsarSettings;
 
