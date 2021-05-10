@@ -1,6 +1,6 @@
-﻿using DotPulsar.Abstractions;
+﻿using CustomProject.Pulsar.Concept.Contracts;
+using DotPulsar.Abstractions;
 using DotPulsar.Extensions;
-using CustomProject.Pulsar.Concept.Contracts;
 using System.Buffers;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -8,37 +8,35 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using CustomProject.Pulsar.Contracts;
-using DotPulsar;
 
 namespace CustomProject.Pulsar.Concept
 {
-	public class ConsumerAdapter : IConsumerAdapter
+	public class ConsumerAdapter<T> : IConsumerAdapter<T> where T : ITopicMessage
 	{
 		private readonly IConsumer<ReadOnlySequence<byte>> _nativeConsumer;
 
-		public ConsumerAdapter(IConsumer<ReadOnlySequence<byte>> nativeConsumer)
+		internal ConsumerAdapter(IConsumer<ReadOnlySequence<byte>> nativeConsumer)
 		{
 			_nativeConsumer = nativeConsumer;
 		}
 
-		public ValueTask AcknowledgeCumulative(MessageId messageId,
+		public ValueTask AcknowledgeCumulative(MessageIdProxy pulsarMessageId,
 			CancellationToken cancellationToken = default)
 		{
-			return _nativeConsumer.AcknowledgeCumulative(messageId, cancellationToken);
+			return _nativeConsumer.AcknowledgeCumulative(pulsarMessageId.MessageId, cancellationToken);
 		}
 
-		public async IAsyncEnumerable<TopicMessageDto<TMessage>> Messages<TMessage>(
-			[EnumeratorCancellation] CancellationToken cancellationToken = default) 
-			where TMessage: ITopicMessage
+		public async IAsyncEnumerable<TopicMessageDto<T>> Messages(
+			[EnumeratorCancellation] CancellationToken cancellationToken = default)
 		{
 			await foreach (var message in _nativeConsumer.Messages(cancellationToken))
 			{
 				var encodedMessage = Encoding.UTF8.GetString(message.Data.ToArray());
 
-				yield return new TopicMessageDto<TMessage>() {
-					Message = JsonSerializer.Deserialize<TMessage>(encodedMessage),
-					MessageId = message.MessageId
+				yield return new TopicMessageDto<T>()
+				{
+					Message = JsonSerializer.Deserialize<T>(encodedMessage),
+					PulsarMessageId = new MessageIdProxy { MessageId = message.MessageId }
 				};
 			}
 		}

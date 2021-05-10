@@ -5,28 +5,26 @@ using CustomProject.Pulsar.Concept.Contracts;
 
 namespace CustomProject.Pulsar.Concept
 {
-	public class ConsoleConfigurationBuilder: IConfigurationBuilder
+	public class ConsoleConfigurationBuilder: IPulsarConfigurationBuilder
 	{
 		private readonly IPulsarSettings _pulsarSettings;
-
-		private IPulsarClientBuilder _pulsarClientBuilder;
 		
-		public IPulsarClient PulsarNativeClient { get; private set; }
+		private readonly Lazy<IPulsarClient> _pulsarNativeClientLazy;
+
+		public IPulsarClient PulsarNativeClient => _pulsarNativeClientLazy.Value;
 
 		public ConsoleConfigurationBuilder(IPulsarSettings pulsarSettings)
 		{
 			_pulsarSettings = pulsarSettings;
+
+			_pulsarNativeClientLazy = new Lazy<IPulsarClient>(BuildPulsarClientViaDefaultSettings);
 		}
 		
-		public IPulsarClientProxy DefaultBuild()
+		private IPulsarClient BuildPulsarClientViaDefaultSettings()
 		{
-			_pulsarClientBuilder ??= PulsarClient.Builder();
-
-			PulsarNativeClient = _pulsarClientBuilder
+			return PulsarClient.Builder()
 				.ServiceUrl(GetServiceUri())
 				.Build();
-			
-			return new PulsarClientProxy(this, _pulsarSettings);
 		}
 
 		private Uri GetServiceUri()

@@ -3,8 +3,8 @@ using System.Threading;
 
 namespace CustomProject.Pulsar.Concept.Contracts
 {
-	public interface IReaderAdapter
+	public interface IReaderAdapter<T> where T : ITopicMessage
 	{
-		IAsyncEnumerable<TMessage> Messages<TMessage>(CancellationToken cancellationToken = default);
+		IAsyncEnumerable<TopicMessageDto<T>> Messages(CancellationToken cancellationToken = default);
 	}
 }

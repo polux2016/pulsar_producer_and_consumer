@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
-using CustomProject.Pulsar.Contracts;
 
 namespace CustomProject.Pulsar.Concept.Contracts
 {
-	public interface IProducerAdapter<in TMessage> where TMessage : ITopicMessage
+	public interface IProducerAdapter<in T> where T : ITopicMessage
 	{
-		Task<DotPulsar.MessageId> Send(TMessage message);
+		Task<MessageIdProxy> Send(T message);
 	}
 }

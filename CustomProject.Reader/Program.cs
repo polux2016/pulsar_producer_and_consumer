@@ -1,9 +1,8 @@
-﻿using System;
+﻿using CustomProject.Pulsar.Concept.Helpers;
+using Microsoft.Extensions.Hosting;
+using System;
+using System.Threading;
 using System.Threading.Tasks;
-using Autofac;
-using CustomProject.Pulsar.Concept.Contracts;
-using CustomProject.Pulsar.Concept.Helpers;
-using CustomProject.Pulsar.Contracts.TopicMessages;
 
 namespace CustomProject.Reader
 {
@@ -16,23 +15,22 @@ namespace CustomProject.Reader
 
 		private static async Task MainAsync()
 		{
-			var container = AgentAutofacConfig.Init();
+			var token = InitConsoleCancellationTokenSource();
 
-			var configurationBuilder = container.Resolve<IConfigurationBuilder>();
-			configurationBuilder.DefaultBuild();
-
-			var pulsarClientProxy = container.Resolve<IPulsarClientProxy>();
-
-			var reader = pulsarClientProxy.NewDefaultReader<AnyTopicMessage>();
-
-			await ConsoleJobRunHelper.RunReaderAsync<AnyTopicMessage>(reader, Handler);
-
-			Console.ReadKey();
+			await ServiceRegistryHelper.ConfigureDefaultHostBuilder()
+				.RunConsoleAsync(token);
 		}
 
-		private static void Handler(AnyTopicMessage message)
+		private static CancellationToken InitConsoleCancellationTokenSource()
 		{
-			Console.WriteLine($"[{nameof(AnyTopicMessage)}]. Message received.");
+			var cts = new CancellationTokenSource();
+			Console.CancelKeyPress += (_, e) =>
+			{
+				Console.WriteLine("Canceling...");
+				cts.Cancel();
+				e.Cancel = true;
+			};
+			return cts.Token;
 		}
 	}
 }

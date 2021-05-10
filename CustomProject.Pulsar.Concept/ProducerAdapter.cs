@@ -1,24 +1,22 @@
 ﻿using CustomProject.Pulsar.Concept.Contracts;
-using CustomProject.Pulsar.Contracts;
 using DotPulsar.Abstractions;
 using System.Buffers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using DotPulsar;
 
 namespace CustomProject.Pulsar.Concept
 {
-	public class ProducerAdapter<TMessage> : IProducerAdapter<TMessage> where TMessage : ITopicMessage
+	public class ProducerAdapter<T> : IProducerAdapter<T> where T : ITopicMessage
 	{
 		private readonly IProducer<ReadOnlySequence<byte>> _nativeProducer;
 
-		public ProducerAdapter(IProducer<ReadOnlySequence<byte>> nativeProducer)
+		internal ProducerAdapter(IProducer<ReadOnlySequence<byte>> nativeProducer)
 		{
 			_nativeProducer = nativeProducer;
 		}
 
-		public async Task<MessageId> Send(TMessage message)
+		public async Task<MessageIdProxy> Send(T message)
 		{
 			var serializedMessage = JsonSerializer.Serialize(message);
 
@@ -26,7 +24,10 @@ namespace CustomProject.Pulsar.Concept
 
 			var data = new ReadOnlySequence<byte>(dataBytes);
 
-			return await _nativeProducer.Send(data);
+			return new MessageIdProxy()
+			{
+				MessageId = await _nativeProducer.Send(data)
+			};
 		}
 	}
 }

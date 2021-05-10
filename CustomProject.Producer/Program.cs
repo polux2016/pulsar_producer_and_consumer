@@ -1,10 +1,10 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Autofac;
-using CustomProject.Pulsar.Concept.Contracts;
+﻿using CustomProject.Pulsar.Concept.Contracts;
 using CustomProject.Pulsar.Concept.Helpers;
 using CustomProject.Pulsar.Contracts.TopicMessages;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CustomProject.Producer
 {
@@ -17,22 +17,26 @@ namespace CustomProject.Producer
 
 		private static async Task MainAsync()
 		{
-			var container = AgentAutofacConfig.Init();
+			var serviceProvider = BuildServiceProvider();
 
-			var configurationBuilder = container.Resolve<IConfigurationBuilder>();
-			configurationBuilder.DefaultBuild();
+			var pulsarClientFactory = serviceProvider.GetRequiredService<IPulsarClientFactory>();
 
-			var pulsarClientProxy = container.Resolve<IPulsarClientProxy>();
+			var producer = pulsarClientFactory.NewDefaultProducer<AnyTopicMessage>();
 
-			var producer = pulsarClientProxy.NewDefaultProducer<AnyTopicMessage>();
-
-			for(var numberOfMessages = 10; numberOfMessages > 0; numberOfMessages--)
+			for (var numberOfMessages = 10; numberOfMessages > 0; numberOfMessages--)
 			{
 				var result = await producer.Send(new AnyTopicMessage());
 				Console.WriteLine(result);
 
 				Thread.Sleep(2000);
 			}
+		}
+
+		private static IServiceProvider BuildServiceProvider()
+		{
+			var host = ServiceRegistryHelper.ConfigureDefaultHostBuilder()
+				.Build();
+			return host.Services;
 		}
 	}
 }

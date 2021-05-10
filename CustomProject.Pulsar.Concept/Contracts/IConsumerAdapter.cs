@@ -1,16 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using CustomProject.Pulsar.Contracts;
-using DotPulsar;
 
 namespace CustomProject.Pulsar.Concept.Contracts
 {
-	public interface IConsumerAdapter
+	public interface IConsumerAdapter<T> where T : ITopicMessage
 	{
-		IAsyncEnumerable<TopicMessageDto<TMessage>> Messages<TMessage>(CancellationToken cancellationToken = default)
-			where TMessage : ITopicMessage;
+		IAsyncEnumerable<TopicMessageDto<T>> Messages(CancellationToken cancellationToken = default);
 
-		ValueTask AcknowledgeCumulative(MessageId messageId, CancellationToken cancellationToken = default);
+		ValueTask AcknowledgeCumulative(MessageIdProxy messageId, CancellationToken cancellationToken = default);
 	}
 }
