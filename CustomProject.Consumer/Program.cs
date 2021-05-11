@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CustomProject.Consumer
 {
@@ -18,6 +19,10 @@ namespace CustomProject.Consumer
 			var token = InitConsoleCancellationTokenSource();
 
 			await ServiceRegistryHelper.ConfigureDefaultHostBuilder()
+				.ConfigureServices(services =>
+				{
+					services.AddHostedService<AnyTopicConsumer>();
+				})
 				.RunConsoleAsync(token);
 		}
 

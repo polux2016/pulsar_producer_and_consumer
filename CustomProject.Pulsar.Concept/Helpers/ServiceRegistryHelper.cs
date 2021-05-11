@@ -1,14 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CustomProject.Pulsar.Concept.Contracts;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace CustomProject.Pulsar.Concept.Helpers
 {
 	public static class ServiceRegistryHelper
 	{
-		private const string CompanyKey = "CustomProject";
-
 		public static IHostBuilder ConfigureDefaultHostBuilder()
 		{
 			var host = Host
@@ -23,14 +21,16 @@ namespace CustomProject.Pulsar.Concept.Helpers
 			return host;
 		}
 
-		private static void AddServicesForCompaniesAssembly(IServiceCollection services)
+		public static void AddPulsarConceptServices(this IServiceCollection services)
 		{
-			services.AddServicesOfAllTypes(scanAssembliesStartsWith: new[] { CompanyKey });
+			services.AddTransient<IPulsarClientFactory, PulsarClientFactory>();
+			services.AddSingleton<IPulsarSettings, PulsarSettings>();
+			services.AddSingleton<IPulsarConfigurationBuilder, PulsarConfigurationBuilder>();
 		}
 
 		private static IHostBuilder ConfigureServicesForCompaniesAssembly(this IHostBuilder hostBuilder)
 		{
-			hostBuilder.ConfigureServices(AddServicesForCompaniesAssembly);
+			hostBuilder.ConfigureServices(AddPulsarConceptServices);
 
 			return hostBuilder;
 		}

@@ -1,4 +1,5 @@
 ﻿using CustomProject.Pulsar.Concept.Helpers;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
@@ -18,6 +19,10 @@ namespace CustomProject.Reader
 			var token = InitConsoleCancellationTokenSource();
 
 			await ServiceRegistryHelper.ConfigureDefaultHostBuilder()
+				.ConfigureServices(services =>
+				{
+					services.AddHostedService<AnyTopicReader>();
+				})
 				.RunConsoleAsync(token);
 		}
 

@@ -9,6 +9,7 @@ namespace CustomProject.Pulsar.Concept.Helpers
 		private readonly Lazy<IConfigurationSection> _configurationSection;
 
 		private const string AppSettingsJsonFileName = "appsettings.json";
+		private const string AzureFunctionLocalSettingsJsonFileName = "local.settings.json";
 
 		protected BaseApplicationSettingsProvider()
 		{
@@ -19,7 +20,9 @@ namespace CustomProject.Pulsar.Concept.Helpers
 		{
 			var configurationRoot = new ConfigurationBuilder()
 				.SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName)
-				.AddJsonFile(AppSettingsJsonFileName, false)
+				.AddJsonFile(path: AzureFunctionLocalSettingsJsonFileName, optional: true)
+				.AddJsonFile(path: AppSettingsJsonFileName, optional: true)
+				.AddEnvironmentVariables()
 				.Build();
 
 			var settingsSectionName = this.GetType().Name;

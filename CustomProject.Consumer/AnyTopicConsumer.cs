@@ -2,11 +2,9 @@
 using CustomProject.Pulsar.Concept.Contracts;
 using CustomProject.Pulsar.Contracts.TopicMessages;
 using Microsoft.Extensions.Logging;
-using TanvirArjel.Extensions.Microsoft.DependencyInjection;
 
 namespace CustomProject.Consumer
 {
-	[HostedService]
 	public class AnyTopicConsumer : PulsarConsumerBackgroundService<AnyTopicMessage>
 	{
 		private readonly ILogger<AnyTopicConsumer> _logger;

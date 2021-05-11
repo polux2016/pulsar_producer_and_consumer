@@ -1,8 +1,6 @@
-﻿using TanvirArjel.Extensions.Microsoft.DependencyInjection;
-
-namespace CustomProject.Pulsar.Concept.Contracts
+﻿namespace CustomProject.Pulsar.Concept.Contracts
 {
-	public interface IPulsarSettings: ISingletonService
+	public interface IPulsarSettings
 	{
 		bool IsPersistent { get; }
 

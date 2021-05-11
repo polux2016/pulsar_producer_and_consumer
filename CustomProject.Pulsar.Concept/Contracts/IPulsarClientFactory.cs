@@ -1,8 +1,6 @@
-﻿using TanvirArjel.Extensions.Microsoft.DependencyInjection;
-
-namespace CustomProject.Pulsar.Concept.Contracts
+﻿namespace CustomProject.Pulsar.Concept.Contracts
 {
-	public interface IPulsarClientFactory : ITransientService
+	public interface IPulsarClientFactory
 	{
 		IProducerAdapter<T> NewDefaultProducer<T>() where T : ITopicMessage;
 
